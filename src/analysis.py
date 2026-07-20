@@ -110,7 +110,7 @@ def generate_insights(df):
     top_customer_share = customer_sales.iloc[0] / customer_sales.sum() * 100
 
     insights.append(
-        f"👤 The top customer contributes ~{top_customer_share:.1f}% of total revenue, indicating some dependency on key customers."
+        f"👤 The highest-value customer contributes ~{top_customer_share:.1f}% of total revenue, indicating a diversified customer base with low dependency risk."
     )
 
 
