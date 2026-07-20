@@ -17,7 +17,12 @@ import pandas as pd
 
 def generate_insights(df):
 
+    import pandas as pd
+
     insights = []
+
+    # Ensure datetime
+    df['Order Date'] = pd.to_datetime(df['Order Date'])
 
     # ----------------------------
     # 1. Category Performance
@@ -28,11 +33,11 @@ def generate_insights(df):
     worst_category = category_sales.idxmin()
 
     insights.append(
-        f"📈 {best_category} generates the highest revenue, making it the strongest performing category."
+        f"📈 {best_category} drives the highest revenue, indicating strong demand — expanding this category could further accelerate growth."
     )
 
     insights.append(
-        f"📉 {worst_category} contributes the least to overall sales, indicating potential for improvement or lower demand."
+        f"📉 {worst_category} contributes the least to total sales, suggesting a need for targeted promotions or product strategy improvements."
     )
 
 
@@ -45,16 +50,16 @@ def generate_insights(df):
     worst_region = region_sales.idxmin()
 
     insights.append(
-        f"🌎 {best_region} region leads in sales, contributing the largest share of revenue."
+        f"🌎 {best_region} region leads in overall sales — allocating more inventory and marketing resources here could maximize returns."
     )
 
     insights.append(
-        f"⚠️ {worst_region} region underperforms compared to others and may need targeted strategies to boost sales."
+        f"⚠️ {worst_region} region underperforms relative to others, indicating an opportunity to improve through localized strategies."
     )
 
 
     # ----------------------------
-    # 3. Product Dependency
+    # 3. Product Concentration
     # ----------------------------
     product_sales = (
         df.groupby('Product Name')['Sales']
@@ -66,11 +71,11 @@ def generate_insights(df):
     top_5_share = product_sales.head(5).sum() / product_sales.sum() * 100
 
     insights.append(
-        f"🏆 {top_product} is the top-selling product."
+        f"🏆 {top_product} is the top-performing product by revenue."
     )
 
     insights.append(
-        f"📦 Top 5 products contribute ~{top_5_share:.1f}% of total sales, showing reliance on a small set of products."
+        f"📦 The top 5 products contribute ~{top_5_share:.1f}% of total sales, indicating reliance on a limited set of products."
     )
 
 
@@ -85,11 +90,11 @@ def generate_insights(df):
     worst_month = monthly_sales.idxmin()
 
     insights.append(
-        f"📅 Sales peak in {best_month}, indicating seasonal demand."
+        f"📅 Sales peak in {best_month}, highlighting seasonal demand — inventory and marketing should align with this trend."
     )
 
     insights.append(
-        f"📉 {worst_month} records the lowest sales, suggesting a slow business period."
+        f"📉 {worst_month} shows the lowest sales, representing a slower business period that may benefit from promotional campaigns."
     )
 
 
@@ -105,7 +110,21 @@ def generate_insights(df):
     top_customer_share = customer_sales.iloc[0] / customer_sales.sum() * 100
 
     insights.append(
-        f"👤 The top customer contributes ~{top_customer_share:.1f}% of total sales, indicating some level of dependency."
+        f"👤 The top customer contributes ~{top_customer_share:.1f}% of total revenue, indicating some dependency on key customers."
     )
+
+
+    # ----------------------------
+    # 6. Average Order Value (AOV)
+    # ----------------------------
+    total_sales = df['Sales'].sum()
+    total_orders = df['Order ID'].nunique()
+
+    aov = total_sales / total_orders
+
+    insights.append(
+        f"💰 The average order value is ${aov:,.2f}, reflecting typical customer spending per transaction."
+    )
+
 
     return insights
