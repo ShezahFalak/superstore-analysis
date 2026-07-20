@@ -23,17 +23,16 @@ def generate_insights(df):
     # 1. Category Performance
     # ----------------------------
     category_sales = df.groupby('Category')['Sales'].sum()
-    category_profit = df.groupby('Category')['Profit'].sum()
 
     best_category = category_sales.idxmax()
-    worst_profit_category = category_profit.idxmin()
+    worst_category = category_sales.idxmin()
 
     insights.append(
-        f" {best_category} drives the highest revenue, making it a key growth category."
+        f"📈 {best_category} generates the highest revenue, making it the strongest performing category."
     )
 
     insights.append(
-        f"! {worst_profit_category} shows the lowest profitability, indicating potential issues with pricing or high discounts."
+        f"📉 {worst_category} contributes the least to overall sales, indicating potential for improvement or lower demand."
     )
 
 
@@ -46,11 +45,11 @@ def generate_insights(df):
     worst_region = region_sales.idxmin()
 
     insights.append(
-        f"🌎 {best_region} leads in overall sales, contributing significantly to total revenue."
+        f"🌎 {best_region} region leads in sales, contributing the largest share of revenue."
     )
 
     insights.append(
-        f" {worst_region} underperforms compared to other regions, suggesting a need for targeted marketing or pricing strategies."
+        f"⚠️ {worst_region} region underperforms compared to others and may need targeted strategies to boost sales."
     )
 
 
@@ -64,55 +63,49 @@ def generate_insights(df):
     )
 
     top_product = product_sales.index[0]
-    top_5_contribution = product_sales.head(5).sum() / product_sales.sum() * 100
+    top_5_share = product_sales.head(5).sum() / product_sales.sum() * 100
 
     insights.append(
-        f" {top_product} is the top-selling product."
+        f"🏆 {top_product} is the top-selling product."
     )
 
     insights.append(
-        f" Top 5 products contribute ~{top_5_contribution:.1f}% of total sales, indicating reliance on a small set of products."
+        f"📦 Top 5 products contribute ~{top_5_share:.1f}% of total sales, showing reliance on a small set of products."
     )
 
 
     # ----------------------------
-    # 4. Monthly Trend
+    # 4. Monthly Trends
     # ----------------------------
     df['Month'] = df['Order Date'].dt.to_period('M')
+
     monthly_sales = df.groupby('Month')['Sales'].sum()
 
     best_month = monthly_sales.idxmax()
     worst_month = monthly_sales.idxmin()
 
     insights.append(
-        f" Sales peaked in {best_month}, suggesting seasonal demand patterns."
+        f"📅 Sales peak in {best_month}, indicating seasonal demand."
     )
 
     insights.append(
-        f"Lowest sales were recorded in {worst_month}, indicating a potential off-season period."
+        f"📉 {worst_month} records the lowest sales, suggesting a slow business period."
     )
 
-    # ----------------------------
-    # 5. Discount vs Profit (IMPORTANT)
-    # ----------------------------
-    if 'Discount' in df.columns and 'Profit' in df.columns:
-
-        discount_impact = df.groupby(pd.cut(df['Discount'], bins=3))['Profit'].mean()
-
-        insights.append(
-            f" Higher discount ranges tend to reduce average profit, suggesting over-discounting may be impacting margins."
-        )
 
     # ----------------------------
-    # 6. Customer Concentration
+    # 5. Customer Concentration
     # ----------------------------
-    customer_sales = df.groupby('Customer Name')['Sales'].sum().sort_values(ascending=False)
+    customer_sales = (
+        df.groupby('Customer Name')['Sales']
+        .sum()
+        .sort_values(ascending=False)
+    )
 
     top_customer_share = customer_sales.iloc[0] / customer_sales.sum() * 100
 
     insights.append(
-        f" The top customer contributes ~{top_customer_share:.1f}% of total sales, indicating moderate customer concentration."
+        f"👤 The top customer contributes ~{top_customer_share:.1f}% of total sales, indicating some level of dependency."
     )
-
 
     return insights
