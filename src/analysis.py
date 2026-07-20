@@ -37,7 +37,7 @@ def generate_insights(df):
     )
 
     insights.append(
-        f"📉 {worst_category} contributes the least to total sales, suggesting a need for targeted promotions or product strategy improvements."
+       f"📉 {worst_category} generates the lowest revenue among categories, highlighting an opportunity for targeted campaigns and growth strategies."
     )
 
 
@@ -75,7 +75,7 @@ def generate_insights(df):
     )
 
     insights.append(
-        f"📦 The top 5 products contribute ~{top_5_share:.1f}% of total sales, indicating reliance on a limited set of products."
+        f"📦 The top 5 products contribute ~{top_5_share:.1f}% of total sales, indicating revenue is distributed across a wide range of products."
     )
 
 
