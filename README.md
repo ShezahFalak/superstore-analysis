@@ -3,7 +3,7 @@
 An interactive dashboard built with Streamlit to explore sales performance, profitability, and regional trends using the Superstore dataset.
 
 ## Live App
-https://YOUR-APP-LINK.streamlit.app
+[https://YOUR-APP-LINK.streamlit.app](https://superstore-analysis-ppcyccgnkrrexzybz6yym4.streamlit.app/)
 
 ## Overview
 This project focuses on understanding how sales and profit vary across different regions, categories, and customer segments. The goal was to turn raw data into a simple, interactive tool for quick insights.
